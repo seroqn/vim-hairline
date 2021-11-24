@@ -1,0 +1,173 @@
+*calmline.txt*	軽量・高機能なステータスライン・タブライン設定ツール
+*calmline*
+
+==============================================================================
+使い方						*calmline-usage*
+
+変数 |g:calmline| を設定する必要があります。|g:calmline.statusline| を定義すれ
+ばステータスラインが有効になります。|g:calmline.tabline| を定義すればタブライ
+ンが有効になります。 >
+	let g:calmline = {}
+	let g:calmline.statusline = {}
+	let g:calmline.tabline = {}
+
+|g:calmline.statusline.left| でステータスラインの左部のパーツを、
+|g:calmline.statusline.right| でステータスラインの右部のパーツを指定します。 >
+	let g:calmline.statusline.left = ["bufname", "filetype"]
+	let g:calmline.statusline.right = ["persent"]
+
+ここで指定されたパートは |g:calmline.part| から探され、置き換えられます。 >
+  let g:calmline.part = {
+	\ "bufname": "%t",
+	\ "filetype": "%{&ft !=# '' ? &ft : 'no ft'}",
+	\ "persent": "%3p%%",
+	\ }
+パート名に接頭辞 "f:" をつけるとそれは関数パートであると見なされます。関数パー
+トは |g:calmline.part_func| から探され、その関数の戻り値に置き換えられます。 >
+	" TODO
+
+パート名に接頭辞 "r:" をつけると 'statusline' で使える式を直接記述できます。 >
+	" TODO
+
+パート名に接頭辞 "H:" をつけるとそれは専用ハイライト名と見なされ、そのハイライ
+トが以後の文字列に適用されます。 >
+	" TODO
+
+パート名に接頭辞 "I:" をつけるとそのアイテムは無視されます。 >
+	" TODO
+
+|g:calmline.tabline.left| でタブラインの左部のパーツを、
+|g:calmline.tabline.right| でタブラインの右部のパーツを指定します。 >
+	" TODO
+
+
+==============================================================================
+インターフェイス
+
+:CalmLineReload					*:CalmLineReload*
+	|g:calmline| から設定を読み込み直し、ステータスラインとタブラインを再
+	設定する。
+
+
+g:calmline#statusline		(辞書)		*g:calmline#statusline*
+	変数。辞書。ステータスライン用のデフォルト設定が用意されている。必要に
+	応じて適宜読み込むと良い。以下のキーを持つ。
+	(TODO)
+
+
+g:calmline#tabline		(辞書)		*g:calmline#tabline*
+	変数。辞書。タブライン用のデフォルト設定が用意されている。必要に応じて
+	適宜読み込むと良い。以下のキーを持つ。
+	(TODO)
+
+
+==============================================================================
+ユーザー定義変数
+
+g:calmline			(辞書)		*g:calmline*
+	既定: 未定義
+	この変数を定義し設定しなければこのプラグインは動作しない。
+	以降の属性を持つ。
+
+
+g:calmline.part			(辞書)		*g:calmline.part*
+	既定: {}
+	辞書。キーにパート名、値に 'statusline' の設定で使用できる式の文字列を
+	指定する。各ステータスライン・タブラインの "left" "right" で指定された
+	パートの本体。
+
+
+g:calmline.part_func		(辞書)		*g:calmline.part_func*
+	既定: {}
+	辞書。キーにパート名、値に関数参照、または関数名の文字列を指定する。
+	この関数は引数を取らず、文字列を返す。
+	各ステータスライン・タブラインの "left" "right" で "f:" 接頭辞付きで指
+	定された関数パートの本体。
+
+
+g:calmline.highlight()		(関数)		*g:calmline.highlight*
+	既定: 未定義
+	この関数内で |:highlight| コマンドを用いてハイライトを定義する。
+
+
+g:calmline.common_hlnames	(文字列のリスト)*g:calmline.common_hlnames*
+	既定: 未定義
+	"COMMON" に定義されている、ハイライトのベース名{base-name}のリスト。こ
+	こに名前があって、"COMMON" 以外の{context}に存在していない定義があるな
+	ら、"COMMON" からハイライトがコピー（リンク）される。
+
+
+g:calmline.statusline		(辞書)		*g:calmline.statusline*
+	これを定義するとステータスライン機能が有効になる。
+
+
+g:calmline.statusline.left	(リスト)	*g:calmline.statusline.left*
+g:calmline.statusline.left_{context}
+	文字列のリスト。ステータスラインの左側に置くパーツを指定する。
+	"g:calmline.statusline.left_NC", "g:calmline.statusline.left_i" のよう
+	に、アンダースコアに続けて{context}を続けた定義があるならその文脈にお
+	いてはそちらの方が優先される。
+
+
+g:calmline.statusline.right	(リスト)	*g:calmline.statusline.right*
+g:calmline.statusline.right_{context}
+	文字列のリスト。ステータスラインの右側に置くパーツを指定する。
+
+
+g:calmline.tabline		(辞書)		*g:calmline.tabline*
+	辞書。これを定義するとタブライン機能が有効になる。
+
+				(関数)		*g:calmline.tabline.get_label*
+g:calmline.tabline.get_label({is-current}, {tabnr})
+	関数、既定: 未定義
+	文字列を返すことが期待される関数。戻り値の文字列はタブラインの各タブの
+	ラベルとして評価される。|setting-tabline|
+	- {is-current}: このタブページがカレントタブなら 1 そうでなければ 0 が
+		与えられる。
+	- {tabnr}: 評価中のタブページの番号。
+
+
+g:calmline.tabline.left		(リスト)	*g:calmline.tabline.left*
+g:calmline.tabline.right	(リスト)	*g:calmline.tabline.right*
+
+
+==============================================================================
+REMARKS
+
+ハイライトの設定:~
+|g:calmline.highlight| にハイライト関数を設定する。ハイライトグループ名は次の
+規則によってつける: "CalmLine_{context}_{base-name}" 。
+例えば `"CalmLine_NC_plain"` など。
+{context}はそのステータスラインが属するウィンドウの状態であり、種類は以下であ
+る:
+	"COMMON"	全ての文脈で共通に使われるハイライト
+	"NC"		非カレントウィンドウ
+	"n"		カレントウィンドウのノーマルモード
+	"v"		カレントウィンドウのビジュアルモード
+	"i"		カレントウィンドウのインサートモード
+	"c"		カレントウィンドウのコマンドモード
+	"t"		カレントウィンドウのターミナルモード
+	"TAB"		タブライン用
+
+
+パーツ指定の表記方法
+	{part-name}	part から{part-name}文字列を探して置き換える。
+	f:{part-func-name}	関数名。part_func から探して評価する。
+	r:{raw-expr}	直接{raw-expr}の文字を使う。
+	H:{hl-name}	以後のハイライトを専用ハイライト{hl-name}に変更する。
+	I:{...}		無視される(ignore)
+	T:{type}	タブラインでのみ有効。タブページの総数を表示す
+			る。{type}は数字で次のいずれかである:
+			- 1:	"(4)" のようにタブページ総数だけを表示する
+			- 2:	"(1/4)" のようにタブページ総数と現在タブページ
+				番号を表示する
+	L{|[frT]}:{...}	この要素の左にスペースを挿入しない
+	R{|[frT]}:{...}	この要素の右にスペースを挿入しない
+	S{|[frT]}:{...}	この要素の頭と末尾にスペースを挿入しない
+
+	"L" "R" "S" の直後には "{part-name}"、"f:{part-func-name}"、
+	"r:{raw-expr}"、"T:{tabpage-total}" を続けることができる。
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:
