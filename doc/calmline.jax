@@ -101,6 +101,11 @@ g:calmline.statusline		(辞書)		*g:calmline.statusline*
 	これを定義するとステータスライン機能が有効になる。
 
 
+g:calmline.statusline.disable	(数値)		*g:calmline.statusline.disable*
+	既定: 0
+	非0 だとステータスライン機能を無効にする。
+
+
 g:calmline.statusline.left	(リスト)	*g:calmline.statusline.left*
 g:calmline.statusline.left_{context}
 	文字列のリスト。ステータスラインの左側に置くパーツを指定する。
@@ -117,8 +122,13 @@ g:calmline.statusline.right_{context}
 g:calmline.tabline		(辞書)		*g:calmline.tabline*
 	辞書。これを定義するとタブライン機能が有効になる。
 
-				(関数)		*g:calmline.tabline.get_label*
-g:calmline.tabline.get_label({is-current}, {tabnr})
+
+g:calmline.tabline.disable	(数値)		*g:calmline.tabline.disable*
+	既定: 0
+	非0 だとタブライン機能を無効にする。
+
+						*g:calmline.tabline.get_label*
+g:calmline.tabline.get_label({is-current}, {tabnr})	(関数)
 	関数、既定: 未定義
 	文字列を返すことが期待される関数。戻り値の文字列はタブラインの各タブの
 	ラベルとして評価される。|setting-tabline|
@@ -142,10 +152,9 @@ REMARKS
 る:
 	"COMMON"	全ての文脈で共通に使われるハイライト
 	"NC"		非カレントウィンドウ
-	"n"		カレントウィンドウのノーマルモード
-	"v"		カレントウィンドウのビジュアルモード
+	"n"		カレントウィンドウのノーマルモード、以下以外のモード
+	"v"		カレントウィンドウのビジュアルモード・セレクトモード
 	"i"		カレントウィンドウのインサートモード
-	"c"		カレントウィンドウのコマンドモード
 	"t"		カレントウィンドウのターミナルモード
 	"TAB"		タブライン用
 
