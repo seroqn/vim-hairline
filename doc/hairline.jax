@@ -49,15 +49,17 @@
 	設定する。
 
 
-g:hairline#statusline		(辞書)		*g:hairline#statusline*
-	変数。辞書。ステータスライン用のデフォルト設定が用意されている。必要に
-	応じて適宜読み込むと良い。以下のキーを持つ。
+g:hairline#default#statusline	(辞書)		*g:hairline#default#statusline*
+	変数。辞書。ステータスライン用のデフォルト設定が用意されている。
+	vimrc からでも読み込めるので必要に応じて適宜読み込むと良い。
+	以下のキーを持つ。
 	(TODO)
 
 
-g:hairline#tabline		(辞書)		*g:hairline#tabline*
-	変数。辞書。タブライン用のデフォルト設定が用意されている。必要に応じて
-	適宜読み込むと良い。以下のキーを持つ。
+g:hairline#default#tabline	(辞書)		*g:hairline#default#tabline*
+	変数。辞書。タブライン用のデフォルト設定が用意されている。
+	vimrc からでも読み込めるので必要に応じて適宜読み込むと良い。
+	以下のキーを持つ。
 	(TODO)
 
 

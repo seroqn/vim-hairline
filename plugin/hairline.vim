@@ -12,17 +12,17 @@ aug HairLine
   au!
   au ColorScheme *  call s:init_hl()
   if s:enable_stl
-    let g:hairline.statusline.left = has_key(g:hairline.statusline, 'left') ? g:hairline.statusline.left : g:hairline#statusline.left
-    let g:hairline.statusline.right = has_key(g:hairline.statusline, 'right') ? g:hairline.statusline.right : g:hairline#statusline.right
+    let g:hairline.statusline.left = has_key(g:hairline.statusline, 'left') ? g:hairline.statusline.left : g:hairline#default#statusline.left
+    let g:hairline.statusline.right = has_key(g:hairline.statusline, 'right') ? g:hairline.statusline.right : g:hairline#default#statusline.right
     au WinEnter,BufEnter * setl stl=%!HairLine_stl()
     au WinLeave,BufLeave * if &l:stl == '%!HairLine_stl()' | setl stl=%!HairLine_stl_NC() | endif
   end
 aug END
 
 if s:enable_tal
-  let g:hairline.tabline.left = has_key(g:hairline.tabline, 'left') ? g:hairline.tabline.left : g:hairline#tabline.left
-  let g:hairline.tabline.right = has_key(g:hairline.tabline, 'right') ? g:hairline.tabline.right : g:hairline#tabline.right
-  let g:hairline.tabline.get_label = has_key(g:hairline.tabline, 'get_label') ? g:hairline.tabline.get_label : g:hairline#tabline.get_label
+  let g:hairline.tabline.left = has_key(g:hairline.tabline, 'left') ? g:hairline.tabline.left : g:hairline#default#tabline.left
+  let g:hairline.tabline.right = has_key(g:hairline.tabline, 'right') ? g:hairline.tabline.right : g:hairline#default#tabline.right
+  let g:hairline.tabline.get_label = has_key(g:hairline.tabline, 'get_label') ? g:hairline.tabline.get_label : g:hairline#default#tabline.get_label
   set tabline=%!HairLine_tal()
 end
 
