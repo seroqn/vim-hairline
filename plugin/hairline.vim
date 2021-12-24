@@ -8,23 +8,31 @@ let g:hairline = exists('g:hairline') ? g:hairline : {}
 let s:enable_stl = has_key(g:hairline, 'statusline') && !get(g:hairline.statusline, 'disable', 0)
 let s:enable_tal = has_key(g:hairline, 'tabline') && !get(g:hairline.tabline, 'disable', 0)
 
+if s:enable_stl && !(has_key(g:hairline.statusline, 'left') && has_key(g:hairline.statusline, 'right'))
+  let g:hairline.statusline.left = g:hairline#default.statusline.left
+  let g:hairline.statusline.right = g:hairline#default.statusline.right
+  let g:hairline.statusline.left_NC = g:hairline#default.statusline.left_NC
+  let g:hairline.statusline.right_NC = g:hairline#default.statusline.right_NC
+  let g:hairline.part = has_key(g:hairline, 'part') ? g:hairline.part : g:hairline#default.part
+  let g:hairline.part_func = has_key(g:hairline, 'part_func') ? g:hairline.part_func : g:hairline#default.part_func
+  let g:hairline.highlight = has_key(g:hairline, 'highlight') ? g:hairline.highlight : g:hairline#default.highlight
+endif
+
 aug HairLine
   au!
   au ColorScheme *  call s:init_hl()
   if s:enable_stl
-    let g:hairline.statusline.left = has_key(g:hairline.statusline, 'left') ? g:hairline.statusline.left : g:hairline#default#statusline.left
-    let g:hairline.statusline.right = has_key(g:hairline.statusline, 'right') ? g:hairline.statusline.right : g:hairline#default#statusline.right
     au WinEnter,BufEnter * setl stl=%!HairLine_stl()
     au WinLeave,BufLeave * if &l:stl == '%!HairLine_stl()' | setl stl=%!HairLine_stl_NC() | endif
-  end
+  endif
 aug END
 
 if s:enable_tal
-  let g:hairline.tabline.left = has_key(g:hairline.tabline, 'left') ? g:hairline.tabline.left : g:hairline#default#tabline.left
-  let g:hairline.tabline.right = has_key(g:hairline.tabline, 'right') ? g:hairline.tabline.right : g:hairline#default#tabline.right
-  let g:hairline.tabline.get_label = has_key(g:hairline.tabline, 'get_label') ? g:hairline.tabline.get_label : g:hairline#default#tabline.get_label
+  let g:hairline.tabline.left = has_key(g:hairline.tabline, 'left') ? g:hairline.tabline.left : g:hairline#default.tabline.left
+  let g:hairline.tabline.right = has_key(g:hairline.tabline, 'right') ? g:hairline.tabline.right : g:hairline#default.tabline.right
+  let g:hairline.tabline.get_label = has_key(g:hairline.tabline, 'get_label') ? g:hairline.tabline.get_label : g:hairline#default.tabline.get_label
   set tabline=%!HairLine_tal()
-end
+endif
 
 function! HairLine_stl() abort "{{{
   let CONF = g:hairline.statusline
@@ -43,7 +51,7 @@ function! HairLine_stl_NC() abort "{{{
   if CONF=={}
     setl stl=
     return ''
-  end
+  endif
   let hlhead = '%#HairLine_NC_'
   let part = get(g:hairline, 'part', {})
   let part_func = get(g:hairline, 'part_func', {})
@@ -87,16 +95,16 @@ endfunc
 function! s:layout_into_exprs(layout, part, part_func, hlhead, ...) abort "{{{ a:1=[crrtn, lasttn]
   let acc = []
   for p in a:layout
-    let strip_lv = p =~# '^S\%(\|[frT]\):' ? 3 : p =~# '^L\%(\|[frT]\):' ? 2 : p =~# '^R\%(\|[frT]\):'
+    let strip_lv = p =~# '^X\%(\|[frT]\):' ? 3 : p =~# '^L\%(\|[frT]\):' ? 2 : p =~# '^R\%(\|[frT]\):'
     let [L, R] = strip_lv==3 ? [[''], ['']] : strip_lv==2 ? [['%('], [' %)']] : strip_lv ? [['%( '], ['%)']] : [['%( '], [' %)']]
     if strip_lv
       let p = p =~# '^\a\a:' ? p[1:] : p[2:]
-    end
+    endif
     if p==''
       let acc += [' !EMPTY! '] | continue
     elseif p !~ '^\a:'
       let acc += L + [get(a:part, p, '??PART??')] + R | continue
-    end
+    endif
     let [c, body] = [p[0], p[2:]]
     if c==#'I'
       continue
@@ -104,12 +112,12 @@ function! s:layout_into_exprs(layout, part, part_func, hlhead, ...) abort "{{{ a
       let result = !has_key(a:part_func, body) ? '??FUNC??' : call(a:part_func[body], [], a:part_func)
       if !empty(result)
         let acc += L + [result] + R
-      end
+      endif
     elseif a:0 && c==#'T'
       let acc += L + (body=='1' ? ['(', a:1[1], ')'] : body=='2' ? ['(', a:1[0], '/', a:1[1], ')'] : ['???']) + R
     else
       let acc += c==#'r' ? L + [body] + R : c==#'H' ? [a:hlhead, body, '#'] : [' ??? ']
-    end
+    endif
   endfor
   return acc
 endfunc
@@ -117,23 +125,23 @@ endfunc
 function! s:init_hl() abort "{{{
   if has_key(g:hairline, 'highlight')
     call g:hairline.highlight()
-  end
+  endif
   hi default link HairLine_TAB_label    TabLine
   hi default link HairLine_TAB_labelSel TabLineSel
   hi default link HairLine_TAB_plain    TabLineFill
   hi default link HairLine_NC_plain     StatusLineNC
   hi default link HairLine_t_plain      StatusLineTerm
   hi default link HairLine_COMMON_plain StatusLine
-  for bhl in get(g:hairline, 'common_hlnames', ['plain'])
+  for hl in get(g:hairline, 'common_hl_basenames', ['plain'])
     for m in ['NC', 'n', 'v', 'i', 't', 'TAB']
-      exe 'hi default link HairLine_'. m. '_'. bhl 'HairLine_COMMON_'. bhl
+      exe 'hi default link HairLine_'. m. '_'. hl 'HairLine_COMMON_'. hl
     endfor
   endfor
 endfunc
 "}}}
 if s:enable_stl || s:enable_tal
   call s:init_hl()
-end
+endif
 
 "=============================================================================
 "END "{{{1

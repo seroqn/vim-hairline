@@ -6,15 +6,18 @@
 
 変数 |g:hairline| を設定する必要があります。|g:hairline.statusline| を定義すれ
 ばステータスラインが有効になります。|g:hairline.tabline| を定義すればタブライ
-ンが有効になります。 >
+ンが有効になります。|g:hairline.statusline| や |g:hairline.tabline| を空にすれ
+ばそれぞれのデフォルト設定が読み込まれます。 >
 	let g:hairline = {}
 	let g:hairline.statusline = {}
 	let g:hairline.tabline = {}
+
 
 |g:hairline.statusline.left| でステータスラインの左部のパーツを、
 |g:hairline.statusline.right| でステータスラインの右部のパーツを指定します。 >
 	let g:hairline.statusline.left = ["bufname", "filetype"]
 	let g:hairline.statusline.right = ["persent"]
+
 
 ここで指定されたパートは |g:hairline.part| から探され、置き換えられます。 >
   let g:hairline.part = {
@@ -22,23 +25,45 @@
 	\ "filetype": "%{&ft !=# '' ? &ft : 'no ft'}",
 	\ "persent": "%3p%%",
 	\ }
+
+
 パート名に接頭辞 "f:" をつけるとそれは関数パートであると見なされます。関数パー
-トは |g:hairline.part_func| から探され、その関数の戻り値に置き換えられます。 >
-	" TODO
+トは |g:hairline.part_func| から探され、その関数の戻り値に置き換えられます。
+|g:hairline.part_func| には関数名や関数を指定します。それは文字列を返すもので
+す。 >
+  let g:hairline.statusline.left = ["f:mode", "bufname", "f:coc"]
+
+  let g:hairline.part_func = {}
+  let g:hairline.part_func.coc = "coc#status"
+  function g:hairline.part_func.mode() abort
+    let mode = get(
+    \ {'n': 'NORMAL', 'i': 'INSERT', 'v': 'VISUAL', 'V': 'V-LINE',
+    \ "\<C-v>": 'V-BLOCK', 't': 'TERMINAL'}, mode(), 'NORMAL')
+    return mode
+  endfunction
+
 
 パート名に接頭辞 "r:" をつけると 'statusline' で使える式を直接記述できます。 >
-	" TODO
+  let g:hairline.statusline.left = ["r:%.30(%F%)", "r:%M"]
+
 
 パート名に接頭辞 "H:" をつけるとそれは専用ハイライト名と見なされ、そのハイライ
-トが以後の文字列に適用されます。 >
-	" TODO
+トが以後の文字列に適用されます。ハイライトは |g:hairline.highlight| で定義しま
+す。 >
+  function! g:hairline.highlight()
+    hi HairLine_n_bufname   guifg=white guibg=gray35
+    hi HairLine_n_mod       guifg=gray54 guibg=gray19
+  endfunction
+  let g:hairline.statusline.left = ["H:bufname", "bufname", "H:mod" "r:%m"]
+実際に名前として使われるのは "HairLine_{context}_{base-name}" の{base-name}部
+分です。|hairline-highlihgt-setting| 参照。
+
 
 パート名に接頭辞 "I:" をつけるとそのアイテムは無視されます。 >
-	" TODO
+  let g:hairline.statusline.left = ["f:mode", "bufname", "I:f:coc"]
+この例では `"I:f:coc"` は無視されます。一時的にアイテムを無効にしたいときなど
+に使用します。
 
-|g:hairline.tabline.left| でタブラインの左部のパーツを、
-|g:hairline.tabline.right| でタブラインの右部のパーツを指定します。 >
-	" TODO
 
 
 ==============================================================================
@@ -49,18 +74,28 @@
 	設定する。
 
 
-g:hairline#default#statusline	(辞書)		*g:hairline#default#statusline*
-	変数。辞書。ステータスライン用のデフォルト設定が用意されている。
+g:hairline#default	(辞書)			*g:hairline#default*
+	変数。辞書。デフォルト設定が用意されている。
 	vimrc からでも読み込めるので必要に応じて適宜読み込むと良い。
-	以下のキーを持つ。
-	(TODO)
+	値の詳細は `autoload/hairline.vim` 参照。以下のキーを持つ。
+	|g:hairline| の statusline や tabline が空の場合、この変数にあるそれぞ
+	れの設定が読み込まれる。
 
+	共通~
+	highlight:	ハイライトを設定する関数
+	part:		パート辞書
+	part_func:	パート関数辞書
 
-g:hairline#default#tabline	(辞書)		*g:hairline#default#tabline*
-	変数。辞書。タブライン用のデフォルト設定が用意されている。
-	vimrc からでも読み込めるので必要に応じて適宜読み込むと良い。
-	以下のキーを持つ。
-	(TODO)
+	statusline~
+	statusline.left: ステータスライン左辺の設定リスト
+	statusline.left_NC: 非カレントウィンドウ時における左辺の設定
+	statusline.right: ステータスライン右辺の設定リスト
+	statusline.right_NC: 非カレントウィンドウ時における右辺の設定
+
+	tabline~
+	tabline.left: タブ左辺の設定リスト
+	tabline.right: タブ右辺の設定リスト
+	tabline.get_label: タブラベル表示関数
 
 
 ==============================================================================
@@ -77,6 +112,8 @@ g:hairline.part			(辞書)		*g:hairline.part*
 	辞書。キーにパート名、値に 'statusline' の設定で使用できる式の文字列を
 	指定する。各ステータスライン・タブラインの "left" "right" で指定された
 	パートの本体。
+	実行時に存在しない part 名を指定されたときには "??PART??" が表示され
+	る。
 
 
 g:hairline.part_func		(辞書)		*g:hairline.part_func*
@@ -85,15 +122,22 @@ g:hairline.part_func		(辞書)		*g:hairline.part_func*
 	この関数は引数を取らず、文字列を返す。
 	各ステータスライン・タブラインの "left" "right" で "f:" 接頭辞付きで指
 	定された関数パートの本体。
+	実行時に存在しない part_func 名を指定されたときには "??FUNC??" が表示
+	される。
 
 
 g:hairline.highlight()		(関数)		*g:hairline.highlight*
 	既定: 未定義
 	この関数内で |:highlight| コマンドを用いてハイライトを定義する。
+	ハイライト名は "HairLine_{context}_{base-name}" の形式で名付ける
+	|hairline-highlihgt-setting|。
+	パーツ指定時に "H:{base-name}" の形で指定されたとき、現在のモードおよ
+	び現在ウィンドウがカレントかどうかによって使われるハイライト名が決定さ
+	れる |hairline-part-notation|。
 
-
-g:hairline.common_hlnames	(文字列のリスト)*g:hairline.common_hlnames*
-	既定: 未定義
+					*g:hairline.common_hl_basenames*
+g:hairline.common_hl_basenames	(文字列のリスト)
+	既定: ["plain"]
 	"COMMON" に定義されている、ハイライトのベース名{base-name}のリスト。こ
 	こに名前があって、"COMMON" 以外の{context}に存在していない定義があるな
 	ら、"COMMON" からハイライトがコピー（リンク）される。
@@ -141,15 +185,22 @@ g:hairline.tabline.get_label({is-current}, {tabnr})	(関数)
 
 g:hairline.tabline.left		(リスト)	*g:hairline.tabline.left*
 g:hairline.tabline.right	(リスト)	*g:hairline.tabline.right*
+	文字列のリスト。タブラインに置くパーツを指定する。
 
 
 ==============================================================================
 REMARKS
 
-ハイライトの設定:~
+ハイライトの設定:				*hairline-highlihgt-setting*
+
 |g:hairline.highlight| にハイライト関数を設定する。ハイライトグループ名は次の
 規則によってつける: "HairLine_{context}_{base-name}" 。
 例えば `"HairLine_NC_plain"` など。
+
+{base-name}の名前は自由に付けられるが、"plain" は特別な名前で、特に
+"H:{base-name}" によって{base-name}を指定されていないときや、"left" を抜けたと
+きなどにはこの{base-name}が使用される。
+
 {context}はそのステータスラインが属するウィンドウの状態であり、種類は以下であ
 る:
 	"COMMON"	全ての文脈で共通に使われるハイライト
@@ -160,12 +211,27 @@ REMARKS
 	"t"		カレントウィンドウのターミナルモード
 	"TAB"		タブライン用
 
+全ての文脈で共通に使えるハイライトは "COMMON" に定義すると良いが、実際には
+|g:hairline.common_hl_basenames| に設定したハイライトベース名を指定しなければ
+いけない。そこに指定されているハイライト名のハイライトが各文脈で使えるようにリ
+ンクされる。"COMMON" に定義されている{base-name}と同名のハイライトを別の文脈で
+定義した場合、その文脈では個別に定義されたものの方が優先される。 >
+  function! g:hairline.highlight()
+    hi HairLine_COMMON_plain      guifg=gray54 guibg=gray19
+    hi HairLine_COMMON_bufname    guifg=white guibg=gray35
+    hi HairLine_COMMON_lineinfo   guifg=gray38 guibg=gray82
 
-パーツ指定の表記方法
+    hi HairLine_NC_plain          guifg=gray43 guibg=gray11
+  endfunction
+  let g:hairline.common_hl_basenames = ["plain", "bufname", "lineinfo"]
+
+
+
+パーツ指定の表記方法				*hairline-part-notation*
 	{part-name}	part から{part-name}文字列を探して置き換える。
 	f:{part-func-name}	関数名。part_func から探して評価する。
 	r:{raw-expr}	直接{raw-expr}の文字を使う。
-	H:{hl-name}	以後のハイライトを専用ハイライト{hl-name}に変更する。
+	H:{base-name}	以後のハイライトを専用ハイライト{base-name}に変更する。
 	I:{...}		無視される(ignore)
 	T:{type}	タブラインでのみ有効。タブページの総数を表示す
 			る。{type}は数字で次のいずれかである:
@@ -174,9 +240,9 @@ REMARKS
 				番号を表示する
 	L{|[frT]}:{...}	この要素の左にスペースを挿入しない
 	R{|[frT]}:{...}	この要素の右にスペースを挿入しない
-	S{|[frT]}:{...}	この要素の頭と末尾にスペースを挿入しない
+	X{|[frT]}:{...}	この要素の頭と末尾にスペースを挿入しない
 
-	"L" "R" "S" の直後には "{part-name}"、"f:{part-func-name}"、
+	"L" "R" "X" の直後には "{part-name}"、"f:{part-func-name}"、
 	"r:{raw-expr}"、"T:{tabpage-total}" を続けることができる。
 
 

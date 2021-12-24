@@ -6,9 +6,16 @@ function! hairline#misc#_reload_stl() abort "{{{
   if !has_key(g:hairline, 'statusline') || get(g:hairline.statusline, 'disable', 0)
     set stl=
     return
-  end
-  let g:hairline.statusline.left = has_key(g:hairline.statusline, 'left') ? g:hairline.statusline.left : g:hairline#statusline.left
-  let g:hairline.statusline.right = has_key(g:hairline.statusline, 'right') ? g:hairline.statusline.right : g:hairline#statusline.right
+  endif
+  if !(has_key(g:hairline.statusline, 'left') && has_key(g:hairline.statusline, 'right'))
+    let g:hairline.statusline.left = g:hairline#default.statusline.left
+    let g:hairline.statusline.right = g:hairline#default.statusline.right
+    let g:hairline.statusline.left_NC = g:hairline#default.statusline.left_NC
+    let g:hairline.statusline.right_NC = g:hairline#default.statusline.right_NC
+    let g:hairline.part = has_key(g:hairline, 'part') ? g:hairline.part : g:hairline#default.part
+    let g:hairline.part_func = has_key(g:hairline, 'part_func') ? g:hairline.part_func : g:hairline#default.part_func
+    let g:hairline.highlight = has_key(g:hairline, 'highlight') ? g:hairline.highlight : g:hairline#default.highlight
+  endif
   aug HairLine
     au WinEnter,BufEnter * setl stl=%!HairLine_stl()
     au WinLeave,BufLeave * if &l:stl == '%!HairLine_stl()' | setl stl=%!HairLine_stl_NC() | endif
@@ -29,7 +36,7 @@ function! hairline#misc#_reload_tal() abort "{{{
     set tabline=%!HairLine_tal()
   else
     set tabline=
-  end
+  endif
 endfunc
 "}}}
 
