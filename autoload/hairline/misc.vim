@@ -16,16 +16,16 @@ function! hairline#misc#_reload_stl() abort "{{{
     let g:hairline.part_func = has_key(g:hairline, 'part_func') ? g:hairline.part_func : g:hairline#default.part_func
     let g:hairline.highlight = has_key(g:hairline, 'highlight') ? g:hairline.highlight : g:hairline#default.highlight
   endif
-  aug HairLine
-    au WinEnter,BufEnter * setl stl=%!HairLine_stl()
-    au WinLeave,BufLeave * if &l:stl == '%!HairLine_stl()' | setl stl=%!HairLine_stl_NC() | endif
+  aug Hairline
+    au WinEnter,BufEnter * setl stl=%!Hairline_stl()
+    au WinLeave,BufLeave * if &l:stl == '%!Hairline_stl()' | setl stl=%!Hairline_stl_NC() | endif
   aug END
   let [i, last] = [1, winnr('$')]
   while i <= last
-    call setwinvar(i, '&stl', '%!HairLine_stl_NC()')
+    call setwinvar(i, '&stl', '%!Hairline_stl_NC()')
     let i += 1
   endwhile
-  setl stl=%!HairLine_stl()
+  setl stl=%!Hairline_stl()
 endfunc
 "}}}
 function! hairline#misc#_reload_tal() abort "{{{
@@ -33,7 +33,7 @@ function! hairline#misc#_reload_tal() abort "{{{
     let g:hairline.tabline.left = has_key(g:hairline.tabline, 'left') ? g:hairline.tabline.left : g:hairline#tabline.left
     let g:hairline.tabline.right = has_key(g:hairline.tabline, 'right') ? g:hairline.tabline.right : g:hairline#tabline.right
     let g:hairline.tabline.get_label = has_key(g:hairline.tabline, 'get_label') ? g:hairline.tabline.get_label : g:hairline#tabline.get_label
-    set tabline=%!HairLine_tal()
+    set tabline=%!Hairline_tal()
   else
     set tabline=
   endif

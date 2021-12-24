@@ -4,26 +4,26 @@ scriptencoding utf-8
 "=============================================================================
 let g:hairline#default = {}
 function! g:hairline#default.highlight() abort "{{{
-  hi HairLine_COMMON_plain  guifg=gray54 guibg=gray19 ctermfg=245 ctermbg=236
+  hi Hairline_COMMON_plain  guifg=gray54 guibg=gray19 ctermfg=245 ctermbg=236
 
-  hi link HairLine_NC_plain HairLine_COMMON_plain
-  hi HairLine_NC_bufname    guifg=gray34 guibg=gray15 ctermfg=240 ctermbg=235
-  hi HairLine_NC_percent    guifg=gray34 guibg=gray15 ctermfg=240 ctermbg=235
-  hi HairLine_NC_lineinfo   guifg=gray15 guibg=gray38 ctermfg=235 ctermbg=241
-  hi HairLine_n_mode        guifg=DarkGreen guibg=GreenYellow ctermfg=22 ctermbg=148 gui=bold term=bold cterm=bold
-  hi HairLine_n_bufname     guifg=white guibg=gray35 ctermfg=231 ctermbg=240
-  hi HairLine_n_percent     guifg=gray74 guibg=gray34 ctermfg=250 ctermbg=240
-  hi HairLine_n_lineinfo    guifg=gray38 guibg=gray82 ctermfg=241 ctermbg=252
-  hi HairLine_i_mode        guifg=SteelBlue4 guibg=white ctermfg=23 ctermbg=231 gui=bold term=bold cterm=bold
-  hi HairLine_i_bufname     guifg=white guibg=DeepSkyBlue3 ctermfg=231 ctermbg=31
-  hi HairLine_i_plain       guifg=SkyBlue guibg=DeepSkyBlue4 ctermfg=117 ctermbg=24
-  hi HairLine_i_percent     guifg=SkyBlue guibg=SteelBlue ctermfg=117 ctermbg=31
-  hi HairLine_i_percent     guifg=SkyBlue guibg=DeepSkyBlue3 ctermfg=117 ctermbg=31
-  hi HairLine_i_lineinfo    guifg=SteelBlue guibg=SkyBlue ctermfg=23 ctermbg=117
-  hi HairLine_v_mode        guifg=red4 guibg=DarkOrange ctermfg=88 ctermbg=208 gui=bold term=bold cterm=bold
-  hi HairLine_v_bufname     guifg=white guibg=gray35 ctermfg=231 ctermbg=240
-  hi HairLine_v_percent     guifg=gray74 guibg=gray34 ctermfg=250 ctermbg=240
-  hi HairLine_v_lineinfo    guifg=gray38 guibg=gray82 ctermfg=241 ctermbg=252
+  hi link Hairline_NC_plain Hairline_COMMON_plain
+  hi Hairline_NC_bufname    guifg=gray34 guibg=gray15 ctermfg=240 ctermbg=235
+  hi Hairline_NC_percent    guifg=gray34 guibg=gray15 ctermfg=240 ctermbg=235
+  hi Hairline_NC_lineinfo   guifg=gray15 guibg=gray38 ctermfg=235 ctermbg=241
+  hi Hairline_n_mode        guifg=DarkGreen guibg=GreenYellow ctermfg=22 ctermbg=148 gui=bold term=bold cterm=bold
+  hi Hairline_n_bufname     guifg=white guibg=gray35 ctermfg=231 ctermbg=240
+  hi Hairline_n_percent     guifg=gray74 guibg=gray34 ctermfg=250 ctermbg=240
+  hi Hairline_n_lineinfo    guifg=gray38 guibg=gray82 ctermfg=241 ctermbg=252
+  hi Hairline_i_mode        guifg=SteelBlue4 guibg=white ctermfg=23 ctermbg=231 gui=bold term=bold cterm=bold
+  hi Hairline_i_bufname     guifg=white guibg=DeepSkyBlue3 ctermfg=231 ctermbg=31
+  hi Hairline_i_plain       guifg=SkyBlue guibg=DeepSkyBlue4 ctermfg=117 ctermbg=24
+  hi Hairline_i_percent     guifg=SkyBlue guibg=SteelBlue ctermfg=117 ctermbg=31
+  hi Hairline_i_percent     guifg=SkyBlue guibg=DeepSkyBlue3 ctermfg=117 ctermbg=31
+  hi Hairline_i_lineinfo    guifg=SteelBlue guibg=SkyBlue ctermfg=23 ctermbg=117
+  hi Hairline_v_mode        guifg=red4 guibg=DarkOrange ctermfg=88 ctermbg=208 gui=bold term=bold cterm=bold
+  hi Hairline_v_bufname     guifg=white guibg=gray35 ctermfg=231 ctermbg=240
+  hi Hairline_v_percent     guifg=gray74 guibg=gray34 ctermfg=250 ctermbg=240
+  hi Hairline_v_lineinfo    guifg=gray38 guibg=gray82 ctermfg=241 ctermbg=252
 endfunc
 "}}}
 

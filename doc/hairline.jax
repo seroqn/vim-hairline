@@ -51,11 +51,11 @@
 トが以後の文字列に適用されます。ハイライトは |g:hairline.highlight| で定義しま
 す。 >
   function! g:hairline.highlight()
-    hi HairLine_n_bufname   guifg=white guibg=gray35
-    hi HairLine_n_mod       guifg=gray54 guibg=gray19
+    hi Hairline_n_bufname   guifg=white guibg=gray35
+    hi Hairline_n_mod       guifg=gray54 guibg=gray19
   endfunction
   let g:hairline.statusline.left = ["H:bufname", "bufname", "H:mod" "r:%m"]
-実際に名前として使われるのは "HairLine_{context}_{base-name}" の{base-name}部
+実際に名前として使われるのは "Hairline_{context}_{base-name}" の{base-name}部
 分です。|hairline-highlihgt-setting| 参照。
 
 
@@ -69,7 +69,7 @@
 ==============================================================================
 インターフェイス
 
-:HairLineReload					*:HairLineReload*
+:HairlineReload					*:HairlineReload*
 	|g:hairline| から設定を読み込み直し、ステータスラインとタブラインを再
 	設定する。
 
@@ -129,7 +129,7 @@ g:hairline.part_func		(辞書)		*g:hairline.part_func*
 g:hairline.highlight()		(関数)		*g:hairline.highlight*
 	既定: 未定義
 	この関数内で |:highlight| コマンドを用いてハイライトを定義する。
-	ハイライト名は "HairLine_{context}_{base-name}" の形式で名付ける
+	ハイライト名は "Hairline_{context}_{base-name}" の形式で名付ける
 	|hairline-highlihgt-setting|。
 	パーツ指定時に "H:{base-name}" の形で指定されたとき、現在のモードおよ
 	び現在ウィンドウがカレントかどうかによって使われるハイライト名が決定さ
@@ -194,8 +194,8 @@ REMARKS
 ハイライトの設定:				*hairline-highlihgt-setting*
 
 |g:hairline.highlight| にハイライト関数を設定する。ハイライトグループ名は次の
-規則によってつける: "HairLine_{context}_{base-name}" 。
-例えば `"HairLine_NC_plain"` など。
+規則によってつける: "Hairline_{context}_{base-name}" 。
+例えば `"Hairline_NC_plain"` など。
 
 {base-name}の名前は自由に付けられるが、"plain" は特別な名前で、特に
 "H:{base-name}" によって{base-name}を指定されていないときや、"left" を抜けたと
@@ -217,11 +217,11 @@ REMARKS
 ンクされる。"COMMON" に定義されている{base-name}と同名のハイライトを別の文脈で
 定義した場合、その文脈では個別に定義されたものの方が優先される。 >
   function! g:hairline.highlight()
-    hi HairLine_COMMON_plain      guifg=gray54 guibg=gray19
-    hi HairLine_COMMON_bufname    guifg=white guibg=gray35
-    hi HairLine_COMMON_lineinfo   guifg=gray38 guibg=gray82
+    hi Hairline_COMMON_plain      guifg=gray54 guibg=gray19
+    hi Hairline_COMMON_bufname    guifg=white guibg=gray35
+    hi Hairline_COMMON_lineinfo   guifg=gray38 guibg=gray82
 
-    hi HairLine_NC_plain          guifg=gray43 guibg=gray11
+    hi Hairline_NC_plain          guifg=gray43 guibg=gray11
   endfunction
   let g:hairline.common_hl_basenames = ["plain", "bufname", "lineinfo"]
 
