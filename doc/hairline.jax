@@ -231,6 +231,14 @@ REMARKS
   hi HairLine_TAB_labelSel  gui=underline guifg=white guibg=#002451
   hi HairLine_TAB_label     guifg=black guibg=gray60
 
+以下のハイライトは未設定の場合、既存の似た働きをもつ以下のハイライトにリンクさ
+れる。
+- Hairline_TAB_label	TabLine
+- Hairline_TAB_labelSel	TabLineSel
+- Hairline_TAB_plain	TabLineFill
+- Hairline_NC_plain	StatusLineNC
+- Hairline_t_plain	StatusLineTerm
+- Hairline_COMMON_plain	StatusLine
 
 
 パーツ指定の表記方法				*hairline-part-notation*
