@@ -16,14 +16,14 @@
 |g:hairline.statusline.left| でステータスラインの左部のパーツを、
 |g:hairline.statusline.right| でステータスラインの右部のパーツを指定します。 >
 	let g:hairline.statusline.left = ["bufname", "filetype"]
-	let g:hairline.statusline.right = ["persent"]
+	let g:hairline.statusline.right = ["percent"]
 
 
 ここで指定されたパートは |g:hairline.part| から探され、置き換えられます。 >
   let g:hairline.part = {
 	\ "bufname": "%t",
 	\ "filetype": "%{&ft !=# '' ? &ft : 'no ft'}",
-	\ "persent": "%3p%%",
+	\ "percent": "%3p%%",
 	\ }
 
 
@@ -35,7 +35,7 @@
 
   let g:hairline.part_func = {}
   let g:hairline.part_func.coc = "coc#status"
-  function g:hairline.part_func.mode() abort
+  function! g:hairline.part_func.mode() abort
     let mode = get(
     \ {'n': 'NORMAL', 'i': 'INSERT', 'v': 'VISUAL', 'V': 'V-LINE',
     \ "\<C-v>": 'V-BLOCK', 't': 'TERMINAL'}, mode(), 'NORMAL')
@@ -224,6 +224,12 @@ REMARKS
     hi Hairline_NC_plain          guifg=gray43 guibg=gray11
   endfunction
   let g:hairline.common_hl_basenames = ["plain", "bufname", "lineinfo"]
+
+タブライン用のハイライトには追加で特別な意味を持つものとして "label" と
+"labelSel" がある。"labelSel" はアクティブなタブページのラベル、"label" は非ア
+クティブなタブページのラベルである。以下のように設定する: >
+  hi HairLine_TAB_labelSel  gui=underline guifg=white guibg=#002451
+  hi HairLine_TAB_label     guifg=black guibg=gray60
 
 
 
