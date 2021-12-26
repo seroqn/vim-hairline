@@ -264,6 +264,8 @@ REMARKS
 
 	"L" "R" "X" の直後には "{part-name}"、"f:{part-func-name}"、
 	"r:{raw-expr}"、"T:{tabpage-total}" を続けることができる。
+>
+  let g:hairline.statusline.left = ["Lf:mode", "R:bufname", "Xr:%M"]
 
 
 ==============================================================================
