@@ -49,7 +49,7 @@ let g:hairline#default.tabline.left = ['T:2']
 let g:hairline#default.tabline.right = []
 function! g:hairline#default.tabline.get_label(is_current, tn) abort "{{{
   let currbuf = bufname(tabpagebuflist(a:tn)[tabpagewinnr(a:tn)-1])
-  return a:tn. ' '. (currbuf=='' ? '[No Name]' : fnamemodify(currbuf, ':t'))
+  return (a:is_current ? a:tn. ' ' : ''). (currbuf=='' ? '[No Name]' : fnamemodify(currbuf, ':h:t'). '/'. fnamemodify(currbuf, ':t'))
 endfunc
 "}}}
 
